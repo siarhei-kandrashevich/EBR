@@ -53,7 +53,7 @@ PROMPT
 PROMPT &&delimiter
 PROMPT Calling create_table_nation.sql
 PROMPT
-@create_table_nation.sql &&USER_NAME
+@tables/create_table_nation.sql &&USER_NAME
 PROMPT
 
 SET SERVEROUTPUT OFF
