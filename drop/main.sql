@@ -31,6 +31,12 @@ PROMPT
 PROMPT
 
 PROMPT &&delimiter
+PROMPT Calling drop_objects.sql
+PROMPT
+@drop_objects.sql &&USER_NAME
+PROMPT
+
+PROMPT &&delimiter
 PROMPT Calling drop_schema.sql
 PROMPT
 @drop_schema.sql &&USER_NAME

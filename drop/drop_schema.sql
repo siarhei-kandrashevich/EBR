@@ -27,7 +27,7 @@ BEGIN
     END;
     
     DBMS_OUTPUT.PUT_LINE('Dropping schema: '||l_schema_name);
-    l_sql:='DROP USER '||l_schema_name;
+    l_sql:='DROP USER '||l_schema_name||' CASCADE';
     
     DBMS_OUTPUT.PUT_LINE('Script to drop schema: '||l_sql);
     EXECUTE IMMEDIATE l_sql;
