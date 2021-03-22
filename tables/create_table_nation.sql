@@ -4,8 +4,6 @@ PROMPT &&delimiter
 PROMPT Script start: create_table_nation.sql
 PROMPT &&delimiter
 
-DEFINE SCHEMA_NAME = &&1
-
 create table nation
 (
   n_nationkey INTEGER not null,
@@ -13,8 +11,6 @@ create table nation
   n_regionkey INTEGER,
   n_comment   VARCHAR2(155)
 );
-
-connect &SCHEMA_NAME
 
 CREATE TABLE nation_imp
                    (n_nationkey INTEGER not null,

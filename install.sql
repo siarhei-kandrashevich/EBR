@@ -50,11 +50,16 @@ PROMPT
 @grants.sql &&USER_NAME
 PROMPT
 
+
+connect &&USER_NAME/oracle
+
 PROMPT &&delimiter
 PROMPT Calling create_table_nation.sql
 PROMPT
-@tables/create_table_nation.sql &&USER_NAME
+@tables/create_table_nation.sql 
 PROMPT
+
+disconnect
 
 SET SERVEROUTPUT OFF
 
