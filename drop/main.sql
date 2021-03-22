@@ -31,21 +31,15 @@ PROMPT
 PROMPT
 
 PROMPT &&delimiter
-PROMPT Calling drop_objects.sql
+PROMPT Calling drop_direcory.sql
 PROMPT
-@drop_objects.sql &&USER_NAME
+@drop_directory.sql &&USER_NAME
 PROMPT
 
 PROMPT &&delimiter
 PROMPT Calling drop_schema.sql
 PROMPT
 @drop_schema.sql &&USER_NAME
-PROMPT
-
-PROMPT &&delimiter
-PROMPT Calling drop_direcory.sql
-PROMPT
-@drop_directory.sql &&USER_NAME
 PROMPT
 
 PROMPT &&delimiter
