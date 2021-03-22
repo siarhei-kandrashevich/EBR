@@ -50,6 +50,12 @@ PROMPT
 @grants.sql &&USER_NAME
 PROMPT
 
+PROMPT &&delimiter
+PROMPT Calling create_table_nation.sql
+PROMPT
+@create_table_nation.sql &&USER_NAME
+PROMPT
+
 SET SERVEROUTPUT OFF
 
 UNDEFINE USER_NAME
