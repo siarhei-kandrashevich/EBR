@@ -18,6 +18,24 @@ PROMPT
 PROMPT
 
 PROMPT &&delimiter
+PROMPT Calling create_procedure.sql
+PROMPT
+@@create_function.sql
+PROMPT
+
+PROMPT &&delimiter
+PROMPT Calling create_view.sql
+PROMPT
+@@create_view.sql
+PROMPT
+
+PROMPT &&delimiter
+PROMPT Calling create_trigger.sql
+PROMPT
+@@create_trigger.sql
+PROMPT
+
+PROMPT &&delimiter
 PROMPT Calling test.sql
 PROMPT
 @@test.sql

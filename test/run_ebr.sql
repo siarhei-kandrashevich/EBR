@@ -7,10 +7,7 @@ SPOOL TEST_SCHEMA_EBR.LOG
 PROMPT &&delimiter
 PROMPT Edition name: &&EDITION_NAME
 PROMPT Creating Edition: &&EDITION_NAME
-CREATE EDITION &&EDITION_NAME;
-COMMIT;
 ALTER SESSION SET EDITION = &&EDITION_NAME;
-ALTER DATABASE DEFAULT EDITION = &&EDITION_NAME;
 PROMPT &&delimiter
 
 SELECT SYS_CONTEXT('USERENV', 'SESSION_EDITION_NAME') AS edition FROM dual;
@@ -28,6 +25,24 @@ PROMPT &&delimiter
 PROMPT Calling create_procedure_ebr.sql
 PROMPT
 @@create_procedure_ebr.sql
+PROMPT
+
+PROMPT &&delimiter
+PROMPT Calling create_procedure_ebr.sql
+PROMPT
+@@create_function_ebr.sql
+PROMPT
+
+PROMPT &&delimiter
+PROMPT Calling create_view.sql
+PROMPT
+@@create_view_ebr.sql
+PROMPT
+
+PROMPT &&delimiter
+PROMPT Calling create_trigger_ebr.sql
+PROMPT
+@@create_trigger_ebr.sql
 PROMPT
 
 PROMPT &&delimiter
