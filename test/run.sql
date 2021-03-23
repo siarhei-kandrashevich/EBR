@@ -36,6 +36,18 @@ PROMPT
 PROMPT
 
 PROMPT &&delimiter
+PROMPT Calling create_package.sql
+PROMPT
+@@create_package.sql
+PROMPT
+
+PROMPT &&delimiter
+PROMPT Calling create_type.sql
+PROMPT
+@@create_type.sql
+PROMPT
+
+PROMPT &&delimiter
 PROMPT Calling test.sql
 PROMPT
 @@test.sql

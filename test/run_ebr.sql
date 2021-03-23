@@ -46,6 +46,18 @@ PROMPT
 PROMPT
 
 PROMPT &&delimiter
+PROMPT Calling create_package_ebr.sql
+PROMPT
+@@create_package_ebr.sql
+PROMPT
+
+PROMPT &&delimiter
+PROMPT Calling create_type_ebr.sql
+PROMPT
+@@create_type_ebr.sql
+PROMPT
+
+PROMPT &&delimiter
 PROMPT Calling test_ebr.sql
 PROMPT
 @@test_ebr.sql
