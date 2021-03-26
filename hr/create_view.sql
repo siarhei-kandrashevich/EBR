@@ -15,8 +15,7 @@ SELECT
     salary,
     commission_pct,
     manager_id,
-    department_id,
-    avg_salary
+    department_id
 FROM
     employees_tab;
 
@@ -38,24 +37,6 @@ SELECT
     location_id
 FROM
     departments_tab; 
-
-CREATE OR REPLACE VIEW employees
-AS
-SELECT
-    employee_id,
-    first_name,
-    last_name,
-    email,
-    phone_number,
-    hire_date,
-    job_id,
-    salary,
-    commission_pct,
-    manager_id,
-    department_id,
-    avg_salary
-FROM
-    employees_tab;  
 
 CREATE OR REPLACE VIEW job_history
 AS    

@@ -12,7 +12,7 @@ CREATE TYPE test_typ1 AS OBJECT
 
      field varchar2(10),
 
-     MEMBER FUNCTION work_period(emp_id integer) RETURN integer 
+     MEMBER FUNCTION work_period(emp_id integer) RETURN integer deterministic
 
    ); 
 

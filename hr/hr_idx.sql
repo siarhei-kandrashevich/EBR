@@ -60,6 +60,9 @@ CREATE INDEX loc_state_province_ix
 
 CREATE INDEX loc_country_ix
        ON locations (country_id);
+	   
+CREATE INDEX ix_first_name 
+       ON employees (up_case(first_name), up_case(last_name));
 
 COMMIT;
 

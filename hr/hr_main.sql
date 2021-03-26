@@ -58,7 +58,7 @@ rem   ahunold   03/12/01 - prompts
 rem   ahunold   03/07/01 - hr_analz.sql
 rem   ahunold   03/03/01 - HR simplification, REGIONS table
 rem   ngreenbe  06/01/00 - created
-
+rem   Example: sqlplus system/oracle@orcl @hr_main.sql EBR_HR /u01/scripts/hr /u01/app/oracle/oradata/ORCLCDB/
 SET ECHO OFF
 
 SET VERIFY OFF
@@ -84,6 +84,10 @@ PROMPT &&delimiter
 
 DEFINE spool_file = &log_path/hr_main.log
 SPOOL &spool_file
+
+PROMPT Script info:
+select sys_context('USERENV', 'MODULE') from dual; 
+PROMPT
 
 REM =======================================================
 REM cleanup section
@@ -162,8 +166,8 @@ GRANT ALTER DATABASE TO &&USER_NAME;
 --GRANT DROP ANY EDITION TO &&USER_NAME;
 --ALTER USER &&USER_NAME ENABLE EDITIONS;
 
-GRANT READ ON DIRECTORY &USER_NAME._IMP TO &USER_NAME; 
-GRANT WRITE ON DIRECTORY &USER_NAME._IMP TO &USER_NAME;
+--GRANT READ ON DIRECTORY &USER_NAME._IMP TO &USER_NAME; 
+--GRANT WRITE ON DIRECTORY &USER_NAME._IMP TO &USER_NAME;
 
 REM =======================================================
 REM create &&USER_NAME schema objects
@@ -182,11 +186,6 @@ PROMPT &&delimiter
 PROMPT Populate tables
 PROMPT &&delimiter
 @hr_popul
-
-PROMPT &&delimiter
-PROMPT Create indexes
-PROMPT &&delimiter
-@hr_idx
 
 PROMPT &&delimiter
 PROMPT Create procedural objects
@@ -222,5 +221,13 @@ PROMPT &&delimiter
 PROMPT Running hr_create_function
 PROMPT &&delimiter
 @create_function
+
+disconnect
+connect &USER_NAME/oracle
+
+PROMPT &&delimiter
+PROMPT Create indexes
+PROMPT &&delimiter
+@hr_idx
 
 spool off

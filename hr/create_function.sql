@@ -19,12 +19,12 @@ RETURN (l_salary);
 END;
 /
 
-CREATE OR REPLACE FUNCTION up_case(acc_no IN VARCHAR) 
-   RETURN VARCHAR
+CREATE OR REPLACE NONEDITIONABLE FUNCTION up_case(acc_no IN VARCHAR) 
+   RETURN INTEGER
+   DETERMINISTIC
    IS 
    BEGIN 
-      
-      RETURN(UPPER(acc_no)); 
+      RETURN(LENGTH(acc_no)); 
     END;
 /
 
