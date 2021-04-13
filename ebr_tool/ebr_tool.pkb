@@ -114,7 +114,11 @@ CREATE OR REPLACE PACKAGE BODY ebr_tool AS
         print_debug(c_prog_name
                     || ': Sql to execute: '
                     || l_sql);
-        --EXECUTE IMMEDIATE l_sql;
+					
+        EXECUTE IMMEDIATE l_sql;
+		
+		print_debug(c_prog_name || ': The view ' || view_name_in || ' was created.');
+		
     EXCEPTION
         WHEN OTHERS THEN
             print_debug(c_prog_name || ': Unexpected exception');
