@@ -53,7 +53,7 @@ CREATE OR REPLACE PACKAGE BODY ebr_tool AS
 			         || l_suffix;
 		END IF;	
 		
-		print_debug(c_prog_name || ': Sql to run ' || l_sql);
+		print_debug(c_prog_name || ': Sql to run :' || l_sql);
 		
 		EXECUTE IMMEDIATE l_sql;
 		
