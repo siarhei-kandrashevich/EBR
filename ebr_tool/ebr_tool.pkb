@@ -52,6 +52,12 @@ CREATE OR REPLACE PACKAGE BODY ebr_tool AS
 			         || table_name_in
 			         || l_suffix;
 		END IF;	
+		
+		print_debug(c_prog_name || ': Sql to run ' || l_sql);
+		
+		EXECUTE IMMEDIATE l_sql;
+		
+		print_debug(c_prog_name || ': The table ' || table_name_in || ' was renamed.');
         
     EXCEPTION
         WHEN OTHERS THEN
