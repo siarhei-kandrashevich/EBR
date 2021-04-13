@@ -1,0 +1,9 @@
+list of tasks:
+
+1 - Ceate table with list of tables which should be renamed
+2 - Create table with list of runs with status for each run, user name, time run etc...
+3 - Create procedure to rename table
+4 - Create procedure to create view based on table_name above
+5 - Create procedure to run renaming tables and creating views (run rename_table --> create_view --> rebuild_invalide)
+6 - Create procedure to rollback all steps for some phase or sprint, etc...
+7 - Create procedure to drop a view
