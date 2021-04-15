@@ -22,8 +22,8 @@ c_debug_on  BOOLEAN := TRUE;
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------	
 
-PROCEDURE rename_table(table_name_in IN USER_TABLES.TABLE_NAME%TYPE,
-                       new_table_name_in IN USER_TABLES.TABLE_NAME%TYPE);
+PROCEDURE rename_table(p_table_name_in IN USER_TABLES.TABLE_NAME%TYPE,
+                       p_new_table_name_in IN USER_TABLES.TABLE_NAME%TYPE);
 
 ---------------------------------------------------------------------------------
 -- Name        : create_view (Public procedure)
@@ -40,8 +40,8 @@ PROCEDURE rename_table(table_name_in IN USER_TABLES.TABLE_NAME%TYPE,
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------
 
-PROCEDURE create_view(table_name_in IN USER_TABLES.TABLE_NAME%TYPE,
-                      view_name_in IN USER_VIEWS.VIEW_NAME%TYPE);
+PROCEDURE create_view(p_table_name_in IN USER_TABLES.TABLE_NAME%TYPE,
+                      p_view_name_in IN USER_VIEWS.VIEW_NAME%TYPE);
 
 ---------------------------------------------------------------------------------
 -- Name        : check_object_exists (Public function)
@@ -58,9 +58,9 @@ PROCEDURE create_view(table_name_in IN USER_TABLES.TABLE_NAME%TYPE,
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------
 
-FUNCTION check_object_exists(object_type_in IN USER_OBJECTS.OBJECT_TYPE%TYPE,
-                             object_name_in IN USER_OBJECTS.OBJECT_NAME%TYPE)
-        RETURN BOOLEAN;
+FUNCTION check_object_exists(p_object_type_in IN USER_OBJECTS.OBJECT_TYPE%TYPE,
+                             p_object_name_in IN USER_OBJECTS.OBJECT_NAME%TYPE)
+    RETURN BOOLEAN;
 
 ---------------------------------------------------------------------------------
 -- Name        : print_debug (Public procedure)
@@ -77,7 +77,7 @@ FUNCTION check_object_exists(object_type_in IN USER_OBJECTS.OBJECT_TYPE%TYPE,
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------
 
-PROCEDURE print_debug(message_in IN VARCHAR2);
+PROCEDURE print_debug(p_message_in IN VARCHAR2);
 
 ---------------------------------------------------------------------------------
 -- Name        : run_renaming (Public procedure)
@@ -94,6 +94,22 @@ PROCEDURE print_debug(message_in IN VARCHAR2);
 ---------------------------------------------------------------------------------
 
 PROCEDURE run_renaming;
+
+---------------------------------------------------------------------------------
+-- Name        : run_rollback (Public procedure)
+-- Description : This procedure will start process of dropping views and renam tables
+-- Notes       : none
+-- Parameters  : INPUT
+--              - none 
+--             : OUTPUT
+--              - none 
+-- Example: 1. EXECUTE ebr_tool.run_rollback;
+-- Returns     : none
+-- Created On  : 09/04/2021
+-- Created By  : Siarhei Kandrashevich
+---------------------------------------------------------------------------------
+
+PROCEDURE run_rollback;
 
 END EBR_TOOL;
 
