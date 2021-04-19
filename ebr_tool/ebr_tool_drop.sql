@@ -19,17 +19,18 @@ PROMPT &&delimiter
 
 PROMPT Script info:
 select sys_context('USERENV', 'MODULE') from dual;
-PROMPT
-PROMPT &&delimiter
-PROMPT Calling drop_ebr_tool_package.sql
-PROMPT
-@drop/drop_ebr_tool_package.sql
-PROMPT
 
 PROMPT &&delimiter
 PROMPT Calling drop_ebr_tool_tables.sql
 PROMPT
 @drop/drop_ebr_tool_tables.sql
+PROMPT
+
+PROMPT
+PROMPT &&delimiter
+PROMPT Calling drop_ebr_tool_package.sql
+PROMPT
+@drop/drop_ebr_tool_package.sql
 PROMPT
 
 SET SERVEROUTPUT OFF

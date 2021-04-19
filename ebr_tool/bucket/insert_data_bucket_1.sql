@@ -21,9 +21,9 @@ DECLARE
         description     ebr_tool_table.description%TYPE        
     );
 
-    TYPE t_table IS TABLE OF t_data_rec;
-    l_table t_table := 
-        t_table(t_data_rec('PCMS_ISSUANCEENTRY_UPDATE', 'PCMS_ISSUANCEENTRY_UPDATE_EBR','PCMS_ISSUANCEENTRY_UPDATE','Proposed','The table is ready to rename'),
+    TYPE t_tbl IS TABLE OF t_data_rec;
+    l_table t_tbl := 
+        t_tbl(t_data_rec('PCMS_ISSUANCEENTRY_UPDATE', 'PCMS_ISSUANCEENTRY_UPDATE_EBR','PCMS_ISSUANCEENTRY_UPDATE','Proposed','The table is ready to rename'),
                 t_data_rec('CMS_STOCK_REPORT', 'CMS_STOCK_REPORT_EBR','CMS_STOCK_REPORT','Proposed','The table is ready to rename'),
                 t_data_rec('CMS_UPLOAD_CTRL', 'CMS_UPLOAD_CTRL_EBR','CMS_UPLOAD_CTRL','Proposed','The table is ready to rename'),
                 t_data_rec('CMS_UPLOAD_SUMMARY', 'CMS_UPLOAD_SUMMARY_EBR','CMS_UPLOAD_SUMMARY','Proposed','The table is ready to rename'),

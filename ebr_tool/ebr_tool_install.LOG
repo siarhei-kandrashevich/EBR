@@ -1,0 +1,163 @@
+-------------------------------------------------------------
+Script start: ebr_tool_install.sql
+-------------------------------------------------------------
+Script info:
+Elapsed: 00:00:00.364
+
+-------------------------------------------------------------
+Calling create_ebr_tool_tables.sql for logging renaming process
+
+-------------------------------------------------------------
+Script start: create_ebr_tool_tables
+-------------------------------------------------------------
+DEFINE _DATE =  "19-APR-21" (CHAR)
+DEFINE _CONNECT_IDENTIFIER =  "orcl" (CHAR)
+DEFINE _USER =  "VMSCMS" (CHAR)
+DEFINE _PRIVILEGE =  "UNKNOWN" (CHAR)
+DEFINE _SQLPLUS_RELEASE =  "0401000000" (CHAR)
+DEFINE _EDITOR =  "notepad" (CHAR)
+DEFINE _O_VERSION =  "Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.3.0.0.0" (CHAR)
+DEFINE _O_RELEASE =  "1900000000" (CHAR)
+DEFINE _PWD =  "D:\Program\sqldeveloper\sqldeveloper\bin" (CHAR)
+DEFINE SCRIPT_NAME =  "create_ebr_tool_tables" (CHAR)
+DEFINE DELIMITER =  "-------------------------------------------------------------" (CHAR)
+
+Table EBR_TOOL_BUCKET created.
+
+Elapsed: 00:00:00.050
+
+Comment created.
+
+Elapsed: 00:00:00.006
+
+Comment created.
+
+Elapsed: 00:00:00.004
+
+Comment created.
+
+Elapsed: 00:00:00.004
+
+Comment created.
+
+Elapsed: 00:00:00.004
+
+Comment created.
+
+Elapsed: 00:00:00.004
+
+Comment created.
+
+Elapsed: 00:00:00.004
+
+Comment created.
+
+Elapsed: 00:00:00.003
+
+Table EBR_TOOL_TABLE created.
+
+Elapsed: 00:00:00.011
+
+Comment created.
+
+Elapsed: 00:00:00.004
+
+Comment created.
+
+Elapsed: 00:00:00.005
+
+Comment created.
+
+Elapsed: 00:00:00.004
+
+Comment created.
+
+Elapsed: 00:00:00.004
+
+Comment created.
+
+Elapsed: 00:00:00.004
+
+Comment created.
+
+Elapsed: 00:00:00.004
+
+Comment created.
+
+Elapsed: 00:00:00.004
+
+Comment created.
+
+Elapsed: 00:00:00.004
+
+Table EBR_TOOL_LOG created.
+
+Elapsed: 00:00:00.011
+
+Comment created.
+
+Elapsed: 00:00:00.005
+
+Comment created.
+
+Elapsed: 00:00:00.003
+
+Comment created.
+
+Elapsed: 00:00:00.005
+
+Comment created.
+
+Elapsed: 00:00:00.004
+
+Comment created.
+
+Elapsed: 00:00:00.005
+
+Comment created.
+
+Elapsed: 00:00:00.005
+
+Table EBR_TOOL_BUCKET altered.
+
+Elapsed: 00:00:00.058
+
+Table EBR_TOOL_TABLE altered.
+
+Elapsed: 00:00:00.017
+
+Table EBR_TOOL_LOG altered.
+
+Elapsed: 00:00:00.019
+
+Table EBR_TOOL_TABLE altered.
+
+Elapsed: 00:00:00.013
+
+Table EBR_TOOL_LOG altered.
+
+Elapsed: 00:00:00.012
+-------------------------------------------------------------
+Script end: create_ebr_tool_tables
+-------------------------------------------------------------
+
+-------------------------------------------------------------
+Calling create_ebr_tool_package.pks for rename tables and create views
+
+
+Package EBR_TOOL compiled
+
+Elapsed: 00:00:00.028
+
+-------------------------------------------------------------
+Calling create_ebr_tool_package.pkb
+
+
+Package Body EBR_TOOL compiled
+
+Elapsed: 00:00:00.073
+
+-------------------------------------------------------------
+Script end: ebr_tool_install.sql
+-------------------------------------------------------------

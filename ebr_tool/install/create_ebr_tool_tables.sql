@@ -1,9 +1,9 @@
 DEFINE delimiter = '-------------------------------------------------------------'
 DEFINE SCRIPT_NAME = 'create_ebr_tool_tables'
 
-DROP TABLE ebr_tool_table;
-DROP TABLE ebr_tool_log;
-DROP TABLE ebr_tool_bucket;
+REM DROP TABLE ebr_tool_table;
+REM DROP TABLE ebr_tool_log;
+REM DROP TABLE ebr_tool_bucket;
 
 PROMPT &&delimiter
 PROMPT Script start: &&SCRIPT_NAME
@@ -20,8 +20,6 @@ CREATE TABLE ebr_tool_bucket (
     status        VARCHAR2(100),
     description   VARCHAR2(200)
 );
-
-/
 
 COMMENT ON COLUMN ebr_tool_bucket.id IS 'Bucket number';
 COMMENT ON COLUMN ebr_tool_bucket.bucket_name IS 'Bucket name';
@@ -42,8 +40,6 @@ CREATE TABLE ebr_tool_table (
     description        VARCHAR2(200)
 );
 
-/
-
 COMMENT ON COLUMN ebr_tool_table.id IS 'Identifier';
 COMMENT ON COLUMN ebr_tool_table.table_name IS 'Name of table which is going to be renamed';
 COMMENT ON COLUMN ebr_tool_table.ebr_tool_bucket_id IS 'FOREIGN KEY to ebr_tool_bucket';
@@ -62,8 +58,6 @@ CREATE TABLE ebr_tool_log (
     log_message         VARCHAR2(2000) NOT NULL
 );
 
-/
-
 COMMENT ON COLUMN ebr_tool_log.id IS 'Identifier';
 COMMENT ON COLUMN ebr_tool_log.ebr_tool_bucket_id IS 'FOREIGN KEY to ebr_tool_bucket';
 COMMENT ON COLUMN ebr_tool_log.message_date IS 'Running date, datetime in this database';
@@ -76,33 +70,23 @@ ALTER TABLE ebr_tool_bucket
     ADD CONSTRAINT pk_ebr_tool_bucket_id
 PRIMARY KEY (id);
 
-/
-
 ALTER TABLE ebr_tool_table
     ADD CONSTRAINT pk_ebr_tool_table_id
 PRIMARY KEY (id);
 
-/
-
 ALTER TABLE ebr_tool_log
     ADD CONSTRAINT pk_ebr_log_id
 PRIMARY KEY (id);
-
-/
 
 ALTER TABLE ebr_tool_table
     ADD CONSTRAINT fk_ebr_tool_bucket_ebr_tool_table_id
 FOREIGN KEY (ebr_tool_bucket_id)
     REFERENCES ebr_tool_bucket (id);
 
-/
-
-/*ALTER TABLE ebr_tool_log
+ALTER TABLE ebr_tool_log
     ADD CONSTRAINT fk_ebr_tool_bucket_ebr_tool_log_id
 FOREIGN KEY (ebr_tool_bucket_id)
     REFERENCES ebr_tool_bucket (id);
-
-*/
 
 PROMPT &&delimiter
 PROMPT Script end: &&SCRIPT_NAME

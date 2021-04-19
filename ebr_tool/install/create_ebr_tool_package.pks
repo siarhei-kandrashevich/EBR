@@ -1,11 +1,14 @@
 CREATE OR REPLACE 
 PACKAGE EBR_TOOL AUTHID CURRENT_USER AS
 
-e_incorrect_object_name EXCEPTION;
+  c_incorrect_object_name         CONSTANT PLS_INTEGER := -20001;
+  e_incorrect_object_name         EXCEPTION;
+  PRAGMA EXCEPTION_INIT(e_incorrect_object_name,-20001);
 
-PRAGMA EXCEPTION_INIT(e_incorrect_object_name, -20011);
+  c_undefined_value               CONSTANT PLS_INTEGER := -20002;
+  e_undefined_value               EXCEPTION;
+  PRAGMA EXCEPTION_INIT(e_undefined_value,-20002);
 
-c_debug_on  BOOLEAN := TRUE;
 ---------------------------------------------------------------------------------
 -- Name        : rename_table (Public procedure)
 -- Description : This procdure will rename the table 
@@ -21,10 +24,10 @@ c_debug_on  BOOLEAN := TRUE;
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------    
 
-/*PROCEDURE rename_table(p_table_name_in      IN user_tables.table_name%TYPE,
-                       p_new_table_name_in  IN user_tables.table_name%TYPE,
-                       p_ebr_tool_bucket_id IN ebr_tool_bucket.id%TYPE,
-                       p_run_date           IN DATE);*/
+PROCEDURE rename_table(p_table_name_in         IN  user_tables.table_name%TYPE,
+                       p_new_table_name_in     IN  user_tables.table_name%TYPE,
+                       p_ebr_tool_bucket_id_in IN ebr_tool_bucket.id%TYPE,
+                       p_run_date_in           IN DATE);
 
 ---------------------------------------------------------------------------------
 -- Name        : create_view (Public procedure)
@@ -43,8 +46,8 @@ c_debug_on  BOOLEAN := TRUE;
 
 /*PROCEDURE create_view(p_table_name_in      IN user_tables.table_name%TYPE,
                       p_view_name_in       IN user_views.view_name%TYPE,
-                      p_ebr_tool_bucket_id IN ebr_tool_bucket.id%TYPE,
-                      p_run_date           IN DATE);*/
+                      p_ebr_tool_bucket_id_in IN ebr_tool_bucket.id%TYPE,
+                      p_run_date_in           IN DATE);*/
 
 ---------------------------------------------------------------------------------
 -- Name        : check_object_exists (Public function)
@@ -61,11 +64,9 @@ c_debug_on  BOOLEAN := TRUE;
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------
 
-/*FUNCTION check_object_exists(p_object_type_in     IN user_objects.object_type%TYPE,
-                             p_object_name_in     IN user_objects.OBJECT_NAME%TYPE,
-							 p_ebr_tool_bucket_id IN ebr_tool_bucket.id%TYPE,
-                             p_run_date           IN DATE)
-    RETURN BOOLEAN;*/
+FUNCTION check_object_exists(p_object_type_in     IN user_objects.object_type%TYPE,
+                             p_object_name_in     IN user_objects.OBJECT_NAME%TYPE)
+    RETURN BOOLEAN;
 
 ---------------------------------------------------------------------------------
 -- Name        : log_message (Public procedure)
@@ -82,11 +83,11 @@ c_debug_on  BOOLEAN := TRUE;
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------
 
-PROCEDURE log_message(p_ebr_tool_bucket_id IN INTEGER, 
-                      p_message_date       IN DATE,
-                      p_message_source     IN VARCHAR2,
-                      p_message_type       IN VARCHAR2,
-                      p_log_message        IN VARCHAR2);
+PROCEDURE log_message(p_ebr_tool_bucket_id_in IN INTEGER, 
+                      p_message_date_in       IN DATE,
+                      p_message_source_in    IN VARCHAR2,
+                      p_message_type_in       IN VARCHAR2,
+                      p_log_message_in        IN VARCHAR2);
 
 ---------------------------------------------------------------------------------
 -- Name        : run_renaming (Public procedure)
@@ -102,7 +103,7 @@ PROCEDURE log_message(p_ebr_tool_bucket_id IN INTEGER,
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------
 
-PROCEDURE run_renaming (p_ebr_tool_bucket_name IN ebr_tool_bucket.bucket_name%TYPE);
+PROCEDURE run_renaming (p_ebr_tool_bucket_name_in IN ebr_tool_bucket.bucket_name%TYPE);
 
 ---------------------------------------------------------------------------------
 -- Name        : run_rollback (Public procedure)
@@ -118,7 +119,7 @@ PROCEDURE run_renaming (p_ebr_tool_bucket_name IN ebr_tool_bucket.bucket_name%TY
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------
 
-PROCEDURE run_rollback (p_ebr_tool_bucket_name IN ebr_tool_bucket.bucket_name%TYPE);
+PROCEDURE run_rollback (p_ebr_tool_bucket_name_in IN ebr_tool_bucket.bucket_name%TYPE);
 
 END EBR_TOOL;
 
