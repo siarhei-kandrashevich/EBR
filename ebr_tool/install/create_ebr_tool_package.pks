@@ -6,7 +6,6 @@ e_incorrect_object_name EXCEPTION;
 PRAGMA EXCEPTION_INIT(e_incorrect_object_name, -20011);
 
 c_debug_on  BOOLEAN := TRUE;
-
 ---------------------------------------------------------------------------------
 -- Name        : rename_table (Public procedure)
 -- Description : This procdure will rename the table 
@@ -20,10 +19,12 @@ c_debug_on  BOOLEAN := TRUE;
 -- Returns     : none
 -- Created On  : 09/04/2021
 -- Created By  : Siarhei Kandrashevich
----------------------------------------------------------------------------------	
+---------------------------------------------------------------------------------    
 
-PROCEDURE rename_table(p_table_name_in IN USER_TABLES.TABLE_NAME%TYPE,
-                       p_new_table_name_in IN USER_TABLES.TABLE_NAME%TYPE);
+/*PROCEDURE rename_table(p_table_name_in      IN user_tables.table_name%TYPE,
+                       p_new_table_name_in  IN user_tables.table_name%TYPE,
+                       p_ebr_tool_bucket_id IN ebr_tool_bucket.id%TYPE,
+                       p_run_date           IN DATE);*/
 
 ---------------------------------------------------------------------------------
 -- Name        : create_view (Public procedure)
@@ -40,8 +41,10 @@ PROCEDURE rename_table(p_table_name_in IN USER_TABLES.TABLE_NAME%TYPE,
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------
 
-PROCEDURE create_view(p_table_name_in IN USER_TABLES.TABLE_NAME%TYPE,
-                      p_view_name_in IN USER_VIEWS.VIEW_NAME%TYPE);
+/*PROCEDURE create_view(p_table_name_in      IN user_tables.table_name%TYPE,
+                      p_view_name_in       IN user_views.view_name%TYPE,
+                      p_ebr_tool_bucket_id IN ebr_tool_bucket.id%TYPE,
+                      p_run_date           IN DATE);*/
 
 ---------------------------------------------------------------------------------
 -- Name        : check_object_exists (Public function)
@@ -58,26 +61,32 @@ PROCEDURE create_view(p_table_name_in IN USER_TABLES.TABLE_NAME%TYPE,
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------
 
-FUNCTION check_object_exists(p_object_type_in IN USER_OBJECTS.OBJECT_TYPE%TYPE,
-                             p_object_name_in IN USER_OBJECTS.OBJECT_NAME%TYPE)
-    RETURN BOOLEAN;
+/*FUNCTION check_object_exists(p_object_type_in     IN user_objects.object_type%TYPE,
+                             p_object_name_in     IN user_objects.OBJECT_NAME%TYPE,
+							 p_ebr_tool_bucket_id IN ebr_tool_bucket.id%TYPE,
+                             p_run_date           IN DATE)
+    RETURN BOOLEAN;*/
 
 ---------------------------------------------------------------------------------
--- Name        : print_debug (Public procedure)
--- Description : This procedure will print a message in log in case debug is on 
+-- Name        : log_message (Public procedure)
+-- Description : This procedure will log a message in log table
 -- Notes       : none
 -- Parameters  : INPUT
 --              - Message  
 --              - Object name
 --             : OUTPUT
 --              - none 
--- Example: 1. EXECUTE ebr_tool.print_debug ('Hello world');
+-- Example: 1. EXECUTE ebr_tool.log_message ('Hello world');
 -- Returns     : none
 -- Created On  : 09/04/2021
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------
 
-PROCEDURE print_debug(p_message_in IN VARCHAR2);
+PROCEDURE log_message(p_ebr_tool_bucket_id IN INTEGER, 
+                      p_message_date       IN DATE,
+                      p_message_source     IN VARCHAR2,
+                      p_message_type       IN VARCHAR2,
+                      p_log_message        IN VARCHAR2);
 
 ---------------------------------------------------------------------------------
 -- Name        : run_renaming (Public procedure)
@@ -87,13 +96,13 @@ PROCEDURE print_debug(p_message_in IN VARCHAR2);
 --              - none 
 --             : OUTPUT
 --              - none 
--- Example: 1. EXECUTE ebr_tool.run_renaming;
+-- Example: 1. EXECUTE ebr_tool.run_renaming('bucket 1');
 -- Returns     : none
 -- Created On  : 09/04/2021
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------
 
-PROCEDURE run_renaming;
+PROCEDURE run_renaming (p_ebr_tool_bucket_name IN ebr_tool_bucket.bucket_name%TYPE);
 
 ---------------------------------------------------------------------------------
 -- Name        : run_rollback (Public procedure)
@@ -103,13 +112,13 @@ PROCEDURE run_renaming;
 --              - none 
 --             : OUTPUT
 --              - none 
--- Example: 1. EXECUTE ebr_tool.run_rollback;
+-- Example: 1. EXECUTE ebr_tool.run_rollback('bucket 1');
 -- Returns     : none
 -- Created On  : 09/04/2021
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------
 
-PROCEDURE run_rollback;
+PROCEDURE run_rollback (p_ebr_tool_bucket_name IN ebr_tool_bucket.bucket_name%TYPE);
 
 END EBR_TOOL;
 

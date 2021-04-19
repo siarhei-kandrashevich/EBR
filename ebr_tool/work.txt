@@ -8,3 +8,18 @@ list of tasks:
 6 - Create procedure to rollback all steps for some phase or sprint, etc...
 7 - Create procedure to drop a view
 8 - Create a script to uinstall EBR_tool dependencies objects
+9 - Script to populate names of new tables and views
+
+04-15-2021
+Вопрос про коммпиляцию инвалидных объкектов, нужно задать
+
+EBR 
+
+создать карточку для EBR enabling
+создать карточку для переименования первых 6 таблиц
+спроить про git возможно создать свой для EBR
+
+
+--INSERT INTO ebr_tool_bucket (bucket_name,status,description) VALUES ('Bucket 1','Proposed','Initial bucket contain only 6 tables.');
+
+
