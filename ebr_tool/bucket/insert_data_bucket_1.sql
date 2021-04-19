@@ -12,6 +12,8 @@ DECLARE
     c_sysdate             DATE := SYSDATE;
     c_bucket_name         ebr_tool_bucket.bucket_name%TYPE := '&&bucket_name';
     c_ebr_tool_bucket_id  ebr_tool_bucket.id%TYPE;
+    c_default_status      ebr_tool_table.status%TYPE := 'Proposed';
+    c_default_description ebr_tool_table.description%TYPE := 'The table is ready to rename';
     
     TYPE t_data_rec IS RECORD (
         table_name      ebr_tool_table.table_name%TYPE,
@@ -23,12 +25,12 @@ DECLARE
 
     TYPE t_tbl IS TABLE OF t_data_rec;
     l_table t_tbl := 
-        t_tbl(t_data_rec('PCMS_ISSUANCEENTRY_UPDATE', 'PCMS_ISSUANCEENTRY_UPDATE_EBR','PCMS_ISSUANCEENTRY_UPDATE','Proposed','The table is ready to rename'),
-                t_data_rec('CMS_STOCK_REPORT', 'CMS_STOCK_REPORT_EBR','CMS_STOCK_REPORT','Proposed','The table is ready to rename'),
-                t_data_rec('CMS_UPLOAD_CTRL', 'CMS_UPLOAD_CTRL_EBR','CMS_UPLOAD_CTRL','Proposed','The table is ready to rename'),
-                t_data_rec('CMS_UPLOAD_SUMMARY', 'CMS_UPLOAD_SUMMARY_EBR','CMS_UPLOAD_SUMMARY','Proposed','The table is ready to rename'),
-                t_data_rec('CMS_BULK_ACTIVITY_REPORT', 'CMS_BULK_ACTIVITY_REPORT_EBR','CMS_BULK_ACTIVITY_REPORT','Proposed','The table is ready to rename'),
-                t_data_rec('CMS_BRANCH_TRANSFER', 'CMS_BRANCH_TRANSFER_EBR','CMS_BRANCH_TRANSFER','Proposed','The table is ready to rename'));
+        t_tbl(t_data_rec('PCMS_ISSUANCEENTRY_UPDATE', 'PCMS_ISSUANCEENTRY_UPDATE_EBR','PCMS_ISSUANCEENTRY_UPDATE',c_default_status,c_default_description),
+                t_data_rec('CMS_STOCK_REPORT', 'CMS_STOCK_REPORT_EBR','CMS_STOCK_REPORT',c_default_status,c_default_description),
+                t_data_rec('CMS_UPLOAD_CTRL', 'CMS_UPLOAD_CTRL_EBR','CMS_UPLOAD_CTRL',c_default_status,c_default_description),
+                t_data_rec('CMS_UPLOAD_SUMMARY', 'CMS_UPLOAD_SUMMARY_EBR','CMS_UPLOAD_SUMMARY',c_default_status,c_default_description),
+                t_data_rec('CMS_BULK_ACTIVITY_REPORT', 'CMS_BULK_ACTIVITY_REPORT_EBR','CMS_BULK_ACTIVITY_REPORT',c_default_status,c_default_description),
+                t_data_rec('CMS_BRANCH_TRANSFER', 'CMS_BRANCH_TRANSFER_EBR','CMS_BRANCH_TRANSFER',c_default_status,c_default_description));
                                
 BEGIN
     

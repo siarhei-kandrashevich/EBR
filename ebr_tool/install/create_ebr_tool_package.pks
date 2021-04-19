@@ -3,11 +3,15 @@ PACKAGE EBR_TOOL AUTHID CURRENT_USER AS
 
   c_incorrect_object_name         CONSTANT PLS_INTEGER := -20001;
   e_incorrect_object_name         EXCEPTION;
-  PRAGMA EXCEPTION_INIT(e_incorrect_object_name,-20001);
+  PRAGMA EXCEPTION_INIT (e_incorrect_object_name,-20001);
 
   c_undefined_value               CONSTANT PLS_INTEGER := -20002;
   e_undefined_value               EXCEPTION;
-  PRAGMA EXCEPTION_INIT(e_undefined_value,-20002);
+  PRAGMA EXCEPTION_INIT (e_undefined_value,-20002);
+  
+  c_object_exists                 CONSTANT PLS_INTEGER := -20003;
+  e_object_exists                 EXCEPTION;
+  PRAGMA EXCEPTION_INIT (e_object_exists,-20003);
 
 ---------------------------------------------------------------------------------
 -- Name        : rename_table (Public procedure)
@@ -44,10 +48,10 @@ PROCEDURE rename_table(p_table_name_in         IN  user_tables.table_name%TYPE,
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------
 
-/*PROCEDURE create_view(p_table_name_in      IN user_tables.table_name%TYPE,
-                      p_view_name_in       IN user_views.view_name%TYPE,
+PROCEDURE create_view(p_table_name_in         IN user_tables.table_name%TYPE,
+                      p_view_name_in          IN user_views.view_name%TYPE,
                       p_ebr_tool_bucket_id_in IN ebr_tool_bucket.id%TYPE,
-                      p_run_date_in           IN DATE);*/
+                      p_run_date_in           IN DATE);
 
 ---------------------------------------------------------------------------------
 -- Name        : check_object_exists (Public function)
@@ -64,8 +68,10 @@ PROCEDURE rename_table(p_table_name_in         IN  user_tables.table_name%TYPE,
 -- Created By  : Siarhei Kandrashevich
 ---------------------------------------------------------------------------------
 
-FUNCTION check_object_exists(p_object_type_in     IN user_objects.object_type%TYPE,
-                             p_object_name_in     IN user_objects.OBJECT_NAME%TYPE)
+FUNCTION check_object_exists(p_object_type_in         IN user_objects.object_type%TYPE,
+                             p_object_name_in         IN user_objects.OBJECT_NAME%TYPE,
+                             p_ebr_tool_bucket_id_in  IN ebr_tool_bucket.id%TYPE,
+                             p_run_date_in            IN DATE)
     RETURN BOOLEAN;
 
 ---------------------------------------------------------------------------------
@@ -85,7 +91,7 @@ FUNCTION check_object_exists(p_object_type_in     IN user_objects.object_type%TY
 
 PROCEDURE log_message(p_ebr_tool_bucket_id_in IN INTEGER, 
                       p_message_date_in       IN DATE,
-                      p_message_source_in    IN VARCHAR2,
+                      p_message_source_in     IN VARCHAR2,
                       p_message_type_in       IN VARCHAR2,
                       p_log_message_in        IN VARCHAR2);
 
@@ -121,5 +127,27 @@ PROCEDURE run_renaming (p_ebr_tool_bucket_name_in IN ebr_tool_bucket.bucket_name
 
 PROCEDURE run_rollback (p_ebr_tool_bucket_name_in IN ebr_tool_bucket.bucket_name%TYPE);
 
+---------------------------------------------------------------------------------
+-- Name        : change_status (Public procedure)
+-- Description : This procedure will change status in ebr_tool_table for a table
+-- Notes       : none
+-- Parameters  : INPUT
+--              - p_table_name_in
+--              - p_new_status   --- Planned, In Progress, Completed, Failed, Rolled back
+--              - p_ebr_tool_bucket_id_in
+--              - p_date_in
+--             : OUTPUT
+--              - none 
+-- Example: 1. EXECUTE ebr_tool.change_status('Table1', '');
+-- Returns     : none
+-- Created On  : 09/04/2021
+-- Created By  : Siarhei Kandrashevich
+---------------------------------------------------------------------------------
+
+PROCEDURE change_status (p_table_name_in         IN user_tables.table_name%TYPE,
+                         p_new_status            IN ebr_tool_table.status%TYPE,
+                         p_description           IN ebr_tool_table.description%TYPE,
+                         p_ebr_tool_bucket_id_in IN ebr_tool_bucket.id%TYPE,
+                         p_run_date_in           IN DATE);
 END EBR_TOOL;
 

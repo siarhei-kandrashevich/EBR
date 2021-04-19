@@ -15,15 +15,12 @@ CREATE OR REPLACE PACKAGE BODY ebr_tool AS
                    'Start renaming for : p_table_name_in='
                    || p_table_name_in
                    || '; p_new_table_name_in='
-                   || p_new_table_name_in
-                   || '; p_ebr_tool_bucket_id_in='
-                   || p_ebr_tool_bucket_id_in);
+                   || p_new_table_name_in);
 
         IF p_table_name_in IS NULL THEN
-            log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'ERROR', 'Table name should be specified.');
             raise_application_error(c_undefined_value, 'Table name should be specified');
         ELSE
-            IF NOT ( ebr_tool.check_object_exists(p_object_type_in => 'TABLE', p_object_name_in => p_table_name_in) ) THEN
+            IF NOT ( ebr_tool.check_object_exists('TABLE', p_table_name_in, p_ebr_tool_bucket_id_in, p_run_date_in) ) THEN
                 raise_application_error(c_incorrect_object_name,
                                        ' Table '
                                        || p_table_name_in
@@ -31,16 +28,11 @@ CREATE OR REPLACE PACKAGE BODY ebr_tool AS
             END IF;
         END IF;
 
-       /* IF p_new_table_name_in IS NOT NULL THEN
-            IF ( ebr_tool.check_object_exists(p_object_type_in => 'TABLE', p_object_name_in => p_new_table_name_in) ) THEN
-                log_message(c_prog_name
-                            || ':'
-                            || ' Table '
-                            || p_new_table_name_in
-                            || ' exists, renaming is not possible');
-                raise_application_error(-20003, ' Table '
-                                                || p_new_table_name_in
-                                                || ' exists, renaming is not possible');
+        IF p_new_table_name_in IS NOT NULL THEN
+            IF ( ebr_tool.check_object_exists('TABLE', p_new_table_name_in, p_ebr_tool_bucket_id_in, p_run_date_in) ) THEN
+                raise_application_error(c_object_exists, ' Table '
+                                                         || p_new_table_name_in
+                                                         || ' exists, renaming is not possible.');
             END IF;
 
             l_sql := 'ALTER TABLE '
@@ -55,26 +47,38 @@ CREATE OR REPLACE PACKAGE BODY ebr_tool AS
                      || l_suffix;
         END IF;
 
-        log_message(c_prog_name
-                    || ': Sql to run :'
-                    || l_sql);
-        EXECUTE IMMEDIATE l_sql;*/
+        log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'WARNING', l_sql);
+        EXECUTE IMMEDIATE l_sql;
+        log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'INFO',
+                   'The table has been renamed from '
+                   || p_table_name_in
+                   || ' to '
+                   || p_new_table_name_in);
 
-                    EXCEPTION
+    EXCEPTION
         WHEN e_incorrect_object_name THEN
             log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'ERROR', sqlerrm);
+            change_status(p_table_name_in, 'Failed', 'The table name is incorrect', p_ebr_tool_bucket_id_in, p_run_date_in);
+            RAISE e_incorrect_object_name;
         WHEN e_undefined_value THEN
             log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'ERROR', sqlerrm);
+            RAISE e_undefined_value;
+        WHEN e_object_exists THEN
+            log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'ERROR', sqlerrm);
+            change_status(p_table_name_in, 'Failed', 'The table with this new name exists', p_ebr_tool_bucket_id_in,
+                         p_run_date_in);
+            RAISE e_object_exists;
         WHEN OTHERS THEN
             log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'ERROR', sqlerrm);
+            change_status(p_table_name_in, 'Failed', 'Unexpected error', p_ebr_tool_bucket_id_in, p_run_date_in);
             RAISE;
     END rename_table;
-/*
+
     PROCEDURE create_view (
-        p_table_name_in      IN user_tables.table_name%TYPE,
-        p_view_name_in       IN user_views.view_name%TYPE,
-        p_ebr_tool_bucket_id_in IN ebr_tool_bucket.id%TYPE,
-        p_run_date_in           IN DATE
+        p_table_name_in          IN  user_tables.table_name%TYPE,
+        p_view_name_in           IN  user_views.view_name%TYPE,
+        p_ebr_tool_bucket_id_in  IN  ebr_tool_bucket.id%TYPE,
+        p_run_date_in            IN  DATE
     ) AS
 
         c_prog_name    VARCHAR2(100) := 'create_view';
@@ -91,26 +95,29 @@ CREATE OR REPLACE PACKAGE BODY ebr_tool AS
             table_name = table_name;
 
     BEGIN
-        log_message(c_prog_name
-                    || ':'
-                    || ' Input parameter table_name_in: '
-                    || p_table_name_in);
-        log_message(c_prog_name
-                    || ':'
-                    || ' Input parameter view_name_in: '
-                    || p_view_name_in);
+        log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'INFO',
+                   'Start renaming for : p_table_name_in='
+                   || p_table_name_in
+                   || '; p_view_name_in='
+                   || p_view_name_in);
+
         IF p_table_name_in IS NULL THEN
-            log_message(c_prog_name
-                        || ':'
-                        || ' Input parameter table_name_in is NULL.');
-            raise_application_error(-20001, 'Table name should be specified.');
+            raise_application_error(c_undefined_value, 'Table name should be specified');
+        END IF;
+        IF p_view_name_in IS NULL THEN
+            raise_application_error(c_undefined_value, 'View name should be specified');
+        END IF;
+        IF NOT ( ebr_tool.check_object_exists('TABLE', p_table_name_in, p_ebr_tool_bucket_id_in, p_run_date_in) ) THEN
+            raise_application_error(c_incorrect_object_name,
+                                   ' Table '
+                                   || p_table_name_in
+                                   || ' does not exists.');
         END IF;
 
-        IF p_view_name_in IS NULL THEN
-            log_message(c_prog_name
-                        || ':'
-                        || ' Input parameter view_name_in is NULL.');
-            raise_application_error(-20002, 'View name should be specified.');
+        IF ( ebr_tool.check_object_exists('VIEW', p_view_name_in, p_ebr_tool_bucket_id_in, p_run_date_in) ) THEN
+            raise_application_error(c_object_exists, ' View '
+                                                     || p_view_name_in
+                                                     || ' exists, creating is not possible.');
         END IF;
 
         l_sql := 'CREATE OR REPLACE EDITIONABLE VIEW '
@@ -128,36 +135,49 @@ CREATE OR REPLACE PACKAGE BODY ebr_tool AS
                  || l_column_list
                  || ' FROM '
                  || p_table_name_in;
-        log_message(c_prog_name
-                    || ': Sql to execute: '
-                    || l_sql);
+        log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'WARNING', l_sql);
         EXECUTE IMMEDIATE l_sql;
-        log_message(c_prog_name
-                    || ': The view '
-                    || p_view_name_in
-                    || ' was created.');
-    EXCEPTION
-        WHEN OTHERS THEN
-            log_message(c_prog_name || ': Unexpected exception');
-            RAISE;
-    END create_view;*/
+        log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'INFO',
+                   'The view '
+                   || p_view_name_in
+                   || ' has been created for '
+                   || p_table_name_in
+                   || ' table.');
 
-                    FUNCTION check_object_exists (
-        p_object_type_in  IN  user_objects.object_type%TYPE,
-        p_object_name_in  IN  user_objects.object_name%TYPE
+    EXCEPTION
+        WHEN e_incorrect_object_name THEN
+            log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'ERROR', sqlerrm);
+            change_status(p_table_name_in, 'Failed', 'The table name is incorrect', p_ebr_tool_bucket_id_in, p_run_date_in);
+            RAISE e_incorrect_object_name;
+        WHEN e_undefined_value THEN
+            log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'ERROR', sqlerrm);
+            RAISE e_undefined_value;
+        WHEN e_object_exists THEN
+            log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'ERROR', sqlerrm);
+            change_status(p_table_name_in, 'Failed', 'The view exists', p_ebr_tool_bucket_id_in, p_run_date_in);
+            RAISE e_object_exists;
+        WHEN OTHERS THEN
+            log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'ERROR', sqlerrm);
+            change_status(p_table_name_in, 'Failed', 'Unexpected error', p_ebr_tool_bucket_id_in, p_run_date_in);
+            RAISE;
+    END create_view;
+
+    FUNCTION check_object_exists (
+        p_object_type_in         IN  user_objects.object_type%TYPE,
+        p_object_name_in         IN  user_objects.object_name%TYPE,
+        p_ebr_tool_bucket_id_in  IN  ebr_tool_bucket.id%TYPE,
+        p_run_date_in            IN  DATE
     ) RETURN BOOLEAN AS
         c_prog_name      VARCHAR2(100) := 'check_object_exists';
         l_object_exists  INTEGER;
     BEGIN
-       /* log_message(c_prog_name
-                    || ':'
-                    || ' Input parameter object_type_in: '
-                    || p_object_type_in);
-        log_message(c_prog_name
-                    || ':'
-                    || ' Input parameter object_name_in: '
-                    || p_object_name_in);*/
-                                        IF (
+        log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'INFO',
+                   'Checking if object exists for: p_object_type_in='
+                   || p_object_type_in
+                   || '; p_object_name_in='
+                   || p_object_name_in);
+
+        IF (
             p_object_type_in IS NOT NULL
             AND p_object_name_in IS NOT NULL
         ) THEN
@@ -171,37 +191,20 @@ CREATE OR REPLACE PACKAGE BODY ebr_tool AS
                 AND o.object_name = upper(p_object_name_in);
 
             IF l_object_exists > 0 THEN
-               /* log_message(c_prog_name
-                            || ':'
-                            || ' Object '
-                            || p_object_name_in
-                            || ' type '
-                            || p_object_type_in
-                            || ' exists.');*/
-
-                                                                                RETURN true;
+                RETURN true;
             ELSE
-             /*   log_message(c_prog_name
-                            || ':'
-                            || ' Object '
-                            || p_object_name_in
-                            || ' type '
-                            || p_object_type_in
-                            || ' does not exist.');*/
-
-                                                                                RETURN false;
+                RETURN false;
             END IF;
         ELSE
-           /* log_message(c_prog_name
-                        || ':'
-                        || ' Input parameters are incorrect.');*/
-                                                                        NULL;
+            raise_application_error(c_undefined_value, 'Table name and object type should be specified');
         END IF;
+
     EXCEPTION
+        WHEN e_undefined_value THEN
+            log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'ERROR', sqlerrm);
         WHEN OTHERS THEN
-           -- log_message(c_prog_name || ': Unexpected exception');
-                                                            RAISE;
-            RETURN NULL;
+            log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'ERROR', sqlerrm);
+            RAISE;
     END check_object_exists;
 
     PROCEDURE log_message (
@@ -226,7 +229,9 @@ CREATE OR REPLACE PACKAGE BODY ebr_tool AS
             p_message_type_in,
             p_log_message_in
         );
-
+        
+        commit;
+        
     END log_message;
 
     PROCEDURE run_renaming (
@@ -240,12 +245,17 @@ CREATE OR REPLACE PACKAGE BODY ebr_tool AS
         l_view_name           VARCHAR2(100);
         CURSOR l_cur_tables_list IS
         SELECT
-            table_name
+            table_name,
+            new_table_name,
+            view_name
         FROM
-            ebr_list;
+            ebr_tool_table
+        WHERE
+            ebr_tool_bucket_id = l_ebr_tool_bucket_id
+            AND status = 'Proposed'
+        ORDER BY ID;
 
     BEGIN
-        log_message(NULL, c_run_date, c_prog_name, 'INFO', 'Start renaming for bucket: ' || p_ebr_tool_bucket_name_in);
         SELECT
             id
         INTO l_ebr_tool_bucket_id
@@ -254,24 +264,43 @@ CREATE OR REPLACE PACKAGE BODY ebr_tool AS
         WHERE
             upper(bucket_name) = upper(p_ebr_tool_bucket_name_in);
 
+        log_message(l_ebr_tool_bucket_id, c_run_date, c_prog_name, 'INFO', 'Start renaming for bucket: ' || p_ebr_tool_bucket_name_in);
+        
         IF l_ebr_tool_bucket_id IS NOT NULL THEN
             BEGIN
                 FOR l_cur_tables_list_rec IN l_cur_tables_list LOOP
-                    
-                    --ebr_tool.rename_table(l_cur_tables_list_rec.table_name, l_cur_tables_list_rec.table_name || '_EBR');
-                    --ebr_tool.create_view(l_cur_tables_list_rec.table_name || '_EBR', l_cur_tables_list_rec.table_name);
-                                                                                                                        NULL;
+                    change_status(l_cur_tables_list_rec.table_name, 'In Progress',
+                                 'Started procces renaming',
+                                 l_ebr_tool_bucket_id,
+                                 c_run_date);
+                    rename_table(l_cur_tables_list_rec.table_name,
+                                l_cur_tables_list_rec.new_table_name,
+                                l_ebr_tool_bucket_id,
+                                c_run_date);
+                    create_view(l_cur_tables_list_rec.new_table_name,
+                               l_cur_tables_list_rec.view_name,
+                               l_ebr_tool_bucket_id,
+                               c_run_date);
+                    change_status(l_cur_tables_list_rec.table_name, 'Completed',
+                                 'The table is renamed',
+                                 l_ebr_tool_bucket_id,
+                                 c_run_date);
                 END LOOP;
             END;
+
             dbms_utility.compile_schema(schema => user, compile_all => false);
+            
+            log_message(l_ebr_tool_bucket_id, c_run_date, c_prog_name, 'INFO', 'All invalid objects have beed recompiled for schema ' || user);
+            
         END IF;
 
     EXCEPTION
         WHEN no_data_found THEN
-            log_message(NULL, c_run_date, c_prog_name, 'ERROR', 'The bucket '
-                                                                || p_ebr_tool_bucket_name_in
-                                                                || ' does not exists. '
-                                                                || sqlerrm);
+            log_message(NULL, c_run_date, c_prog_name, 'ERROR',
+                       'The bucket '
+                       || p_ebr_tool_bucket_name_in
+                       || ' does not exists. '
+                       || sqlerrm);
         WHEN OTHERS THEN
             log_message(NULL, c_run_date, c_prog_name, 'ERROR', sqlerrm);
     END run_renaming;
@@ -288,9 +317,13 @@ CREATE OR REPLACE PACKAGE BODY ebr_tool AS
         l_sql                 VARCHAR2(25000);
         CURSOR l_cur_tables_list IS
         SELECT
-            table_name
+            table_name,
+            new_table_name,
+            view_name
         FROM
-            ebr_list;
+            ebr_tool_table
+        WHERE
+            ebr_tool_bucket_id = l_ebr_tool_bucket_id;
 
     BEGIN
         
@@ -326,7 +359,35 @@ CREATE OR REPLACE PACKAGE BODY ebr_tool AS
             NULL;
             
         END IF;   */
-                                                NULL;
+                                                                                                                        NULL;
     END run_rollback;
+
+    PROCEDURE change_status (
+        p_table_name_in          IN  user_tables.table_name%TYPE,
+        p_new_status             IN  ebr_tool_table.status%TYPE,
+        p_description            IN  ebr_tool_table.description%TYPE,
+        p_ebr_tool_bucket_id_in  IN  ebr_tool_bucket.id%TYPE,
+        p_run_date_in            IN  DATE
+    ) AS
+        c_prog_name VARCHAR2(100) := 'change_status';
+    BEGIN
+        log_message(p_ebr_tool_bucket_id_in, p_run_date_in, c_prog_name, 'INFO',
+                   'Start updating status for : p_table_name_in='
+                   || p_table_name_in
+                   || '; p_new_status='
+                   || p_new_status
+                   || '; p_description='
+                   || p_description);
+
+        UPDATE ebr_tool_table
+        SET
+            status = p_new_status,
+            description = p_description,
+            last_update = p_run_date_in
+        WHERE
+                table_name = p_table_name_in
+            AND ebr_tool_bucket_id = p_ebr_tool_bucket_id_in;
+
+    END;
 
 END ebr_tool;
